@@ -1,0 +1,99 @@
+// ----------------------------------------------------------------------------------------------------------
+App.js:
+===================
+import './App.css'
+import React from "react"
+ import axios from "axios"
+import { useState } from "react"
+const API_key=`c9e6319ba787ab63a24028023db8ae97`
+//  const city="london"
+
+function App(){
+const[city,setCity]=useState("")
+const[data,setdata]=useState()
+const fetchdata=async()=>{
+  try{
+    const Response=await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_key}`)
+console.log(Response.data)
+     setdata(Response.data)
+  }
+  catch(err){
+    alert("please enter city name")
+  }
+}  
+  return(
+       <div id="app-container">
+        <h1 id="tittle"><u>weather Report</u></h1>
+          <div>
+          <input type="text" value={city}  placeholder="enter city name"
+          onChange={(event)=>setCity(event.target.value)} id='input'></input> 
+          <button onClick={fetchdata} id="button">VIEW</button>
+
+            </div>
+         {data &&(
+            <div className="datas-container">
+              <h1 id="city name"> {data.name},{data.sys.country}</h1>
+              <div id="weather-info">
+                 <p id="temp">Temperature:{Math.floor(data.main.temp)}<sup><small>o</small></sup> C</p>
+              </div>
+                 <div>
+                  <h2>lattitude:{data.coord.lat}</h2>
+                  <h2>longitude:{data.coord.lon}</h2>
+                  <h3>weather:{data.weather[0].main}</h3>
+
+                 </div>
+            </div>
+         )}   
+       </div>
+  )
+}export default App
+app.css:
+===================================
+body{
+  margin: 0;
+background-color:lightgray;
+}
+#app-container{
+   box-sizing: border-box;
+   width: 500px;
+   height: 500px;
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    top: 10%;
+    left: 35%;
+    border: 2px solid salmon;
+    border-radius: 10px;
+
+}
+#tittle{
+  color: red;
+}
+#input{
+   width: 350px;
+   height: 20px;
+   border-radius: 10px;
+   font-size: medium;
+   font-weight: bold; 
+}
+#button{
+  background-color:rgb(16, 126, 40);
+  padding: 5px;
+  font-size: medium;
+  font-weight: bold;
+  border-radius: 20px;
+  position: relative;
+  left:2%;
+  cursor: pointer;
+}
+#button:hover{
+  background-color: red;
+}
+#temp{
+   font-size:25px;
+   font-weight: 400;
+   color: rgb(255, 0, 0);
+}
+
